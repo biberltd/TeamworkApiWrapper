@@ -16,12 +16,17 @@ namespace BiberLtd\TeamworkApiWrapper\DataType;
 abstract class BaseDataType{
 
     /**
+     * @var array
+     */
+    protected $propToJsonMap;
+
+    /**
      * BaseDataType constructor.
      * @param \stdClass|null $responseObj
      */
     public function __construct(\stdClass $responseObj = null){
-        if (!is_null($responseObj) && $entity instanceof \stdClass){
-            $this->convertFromResponseObj($entity);
+        if (!is_null($responseObj) && $responseObj instanceof \stdClass){
+            $this->convertFromResponseObj($responseObj);
         }
     }
 
@@ -33,7 +38,15 @@ abstract class BaseDataType{
     public final function outputToJson(array $props = []){
         $object = $this->getRepObject($props);
 
-        return json_encode($object);
+        $jsonStr = json_decode($object);
+
+        foreach($object as $prop => $value){
+            if(isseT($this->propToJsonMap[$prop])){
+                $jsonStr = str_replace($prop, $this->propToJsonMap[$prop], $jsonStr);
+            }
+        }
+
+        return $jsonStr;
     }
 
     /**

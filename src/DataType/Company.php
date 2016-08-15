@@ -92,6 +92,20 @@ class Company extends BaseDataType
      * @throws InvalidDataType
      */
     public function __construct(\stdClass $responseObj = null){
+        $this->propToJsonMap = [
+            'addressOne'                => 'address_one',
+            'addressTwo'                => 'address_two',
+            'canSeePrivate'             => 'can_see_private',
+            'city'                      => 'city',
+            'country'                   => 'country',
+            'companyNameUrl'            => 'company?name_url',
+            'fax'                       => 'fax',
+            'id'                        => 'id',
+            'name'                      => 'name',
+            'phone'                     => 'phone',
+            'state'                     => 'state',
+            'website'                   => 'website',
+        ];
         parent::convertFromResponseObj($responseObj);
     }
 

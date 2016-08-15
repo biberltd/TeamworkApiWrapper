@@ -86,6 +86,20 @@ class Comment extends BaseDataType
      * @throws InvalidDataType
      */
     public function __construct(\stdClass $responseObj = null){
+        $this->propToJsonMap = [
+            'attachmentsCount'          => 'attachments-count',
+            'authorAvatarUrl'           => 'author-avatar-url',
+            'authorFirstName'           => 'author-firstName',
+            'authorId'                  => 'author_id',
+            'authorLastName'            => 'author-lastname',
+            'body'                      => 'body',
+            'commentableId'             => 'commentable-id',
+            'commentableType'           => 'commentable_type',
+            'dateTime'                  => 'datetime',
+            'emailedFrom'               => 'emailed-from',
+            'id'                        => 'id',
+            'private'                   => 'private',
+        ];
         parent::convertFromResponseObj($responseObj);
     }
 

@@ -58,6 +58,14 @@ class Category extends BaseDataType
      * @throws InvalidDataType
      */
     public function __construct(\stdClass $responseObj = null){
+        $this->propToJsonMap = [
+            'id'                        => 'id',
+            'elementsCount'             => 'elements_count',
+            'name'                      => 'name',
+            'parentId'                  => 'parent-id',
+            'projectId'                 => 'project-id',
+            'type'                      => 'type',
+        ];
         parent::convertFromResponseObj($responseObj);
     }
 

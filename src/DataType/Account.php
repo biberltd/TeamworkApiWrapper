@@ -108,6 +108,24 @@ class Account extends BaseDataType
      * @throws InvalidDataType
      */
     public function __construct(\stdClass $responseObj = null){
+        $this->propToJsonMap = [
+          'accountHolderId'             => 'account-holder-id',
+          'cacheUuid'                   => 'cacheUUID',
+          'companyId'                   => 'companyid',
+          'companyName'                 => 'companyname',
+          'code'                        => 'code',
+          'createdAt'                   => 'created-at',
+          'dateSignedUp'                => 'datesignedup',
+          'emailNotificationEnabled'    => 'email-notification-enabled',
+          'id'                          => 'id',
+          'lang'                        => 'lang',
+          'logo'                        => 'logo',
+          'name'                        => 'name',
+          'requireHttps'                => 'requirehttps',
+          'sslEnabled'                  => 'ssl-enabled',
+          'timeTrackingEnabled'         => 'time-tracking-enabled',
+          'url'                         => 'URL',
+        ];
         parent::convertFromResponseObj($responseObj);
     }
 

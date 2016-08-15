@@ -97,6 +97,22 @@ class Message extends BaseDataType
      * @throws InvalidDataType
      */
     public function __construct(\stdClass $responseObj = null){
+        $this->propToJsonMap = [
+            'attachmentsCounts'         => 'attachments-count',
+            'authorAvatarUrl'           => 'author-avatar-url',
+            'authorFirstName'           => 'author-first-name',
+            'authorId'                  => 'author-id',
+            'authorLastName'            => 'author-last-name',
+            'body'                      => 'body',
+            'categoryId'                => 'category-id',
+            'commentsCount'             => 'comments-count',
+            'displayBody'               => 'display-body',
+            'id'                        => 'id',
+            'postedOn'                  => 'posted-on',
+            'private'                   => 'private',
+            'projectId'                 => 'project-id',
+            'title'                     => 'title',
+        ];
         parent::convertFromResponseObj($responseObj);
     }
 
