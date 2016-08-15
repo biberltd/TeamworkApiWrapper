@@ -10,73 +10,72 @@
  * Check http://team.bodevoffice.com for technical documentation or consult your representative.
  *
  * Contact support@bodevoffice.com for support requests.
+ *
+ * @see http://developer.teamwork.com/datareference#message_reply
  */
 namespace BiberLtd\TeamworkApiWrapper\DataType;
 
 
 use BiberLtd\TeamworkApiWrapper\Exception\InvalidDataType;
 
-class Comment extends BaseDataType
+class MessageReply extends BaseDataType
 {
-
     /**
      * @var int
      */
     public $attachmentsCount;
-
     /**
      * @var string
      */
     public $authorAvatarUrl;
-
     /**
      * @var string
      */
     public $authorFirstName;
-
-    /**
-     * @var string
-     */
-    public $authorLastName;
-
     /**
      * @var int
      */
     public $authorId;
-
+    /**
+     * @var string
+     */
+    public $authorLastName;
     /**
      * @var string
      */
     public $body;
-
     /**
      * @var int
      */
-    public $commentabşeId;
-
+    public $categoryId;
     /**
-     * @var string
+     * @var int
      */
-    public $commentableType;
-    /**
-     * @var string
-     */
-    public $dateTime;
-
-    /**
-     * @var string
-     */
-    public $emailedFrom;
-
+    public $commentsCount;
     /**
      * @var int
      */
     public $id;
     /**
+     * @var int
+     */
+    public $messageId;
+    /**
+     * @var string
+     */
+    public $postedOn;
+    /**
      * @var bool
      */
     public $private;
-
+    /**
+     * @var int
+     */
+    public $replyNo;
+    /**
+     * @var string
+     */
+    public $title;
 
     /**
      * Account constructor.
@@ -93,23 +92,21 @@ class Comment extends BaseDataType
      */
     public function convertFromResponseObj(\stdClass $responseObj)
     {
-        if(!isset($responseObj->comment)){
-            throw new InvalidDataType('comment');
-        }
+        $this->attachmentsCount = $responseObj->{'attachments-count'};
+        $this->authorAvatarUrl = $responseObj->{'author-avatar-url'};
+        $this->authorFirstName = $responseObj->{'author-firstname'};
+        $this->authorId = $responseObj->{'author-id'};
+        $this->authorLastName= $responseObj->{'author-lastname'};
+        $this->body = $responseObj->body;
+        $this->categoryId = $responseObj->{'category-id'};
+        $this->commentsCount = $responseObj->{'comments-count'};
+        $this->id = $responseObj->id;
+        $this->messageId = $responseObj->messageId;
+        $this->postedOn = $responseObj->{'posted-on'};
+        $this->private = $responseObj->private;
+        $this->replyNo = $responseObj->replyNo;
+        $this->title = $responseObj->title;
 
-        $commentDetails = $responseObj->comment;
 
-        $this->attachmentsCount = $commentDetails->{'attachments-count'};
-        $this->authorAvatarUrl = $commentDetails->{'author-avatar-url'};
-        $this->authorFirstName = $commentDetails->{'author-firstname'};
-        $this->authorLastName = $commentDetails->{'author-lastname'};
-        $this->authorId = $commentDetails->author_id;
-        $this->body = $commentDetails->body;
-        $this->commentabşeId = $commentDetails->{'commentable-id'};
-        $this->commentableType = $commentDetails->commentable_type;
-        $this->dateTime = $commentDetails->datetime;
-        $this->emailedFrom = $commentDetails->{'emailed-from'};
-        $this->id = $commentDetails->id;
-        $this->private = $commentDetails->private;
     }
 }

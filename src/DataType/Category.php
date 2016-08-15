@@ -65,7 +65,7 @@ class Category extends BaseDataType
      */
     public function convertFromResponseObj(\stdClass $responseObj)
     {
-        if(!isset($responseObj->account)){
+        if(!isset($responseObj->category)){
             throw new InvalidDataType('category');
         }
 

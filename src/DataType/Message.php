@@ -16,7 +16,7 @@ namespace BiberLtd\TeamworkApiWrapper\DataType;
 
 use BiberLtd\TeamworkApiWrapper\Exception\InvalidDataType;
 
-class Comment extends BaseDataType
+class Message extends BaseDataType
 {
 
     /**
@@ -35,14 +35,14 @@ class Comment extends BaseDataType
     public $authorFirstName;
 
     /**
-     * @var string
-     */
-    public $authorLastName;
-
-    /**
      * @var int
      */
     public $authorId;
+
+    /**
+     * @var string
+     */
+    public $authorLastName;
 
     /**
      * @var string
@@ -52,31 +52,42 @@ class Comment extends BaseDataType
     /**
      * @var int
      */
-    public $commentabşeId;
+    public $categoryId;
+
+    /**
+     * @var int
+     */
+    public $commentsCount;
 
     /**
      * @var string
      */
-    public $commentableType;
-    /**
-     * @var string
-     */
-    public $dateTime;
-
-    /**
-     * @var string
-     */
-    public $emailedFrom;
+    public $displayBody;
 
     /**
      * @var int
      */
     public $id;
+
+    /**
+     * @var string
+     */
+    public $postedOn;
+
     /**
      * @var bool
      */
     public $private;
 
+    /**
+     * @var int
+     */
+    public $projectId;
+
+    /**
+     * @var string
+     */
+    public $title;
 
     /**
      * Account constructor.
@@ -93,23 +104,26 @@ class Comment extends BaseDataType
      */
     public function convertFromResponseObj(\stdClass $responseObj)
     {
-        if(!isset($responseObj->comment)){
-            throw new InvalidDataType('comment');
+        if(!isset($responseObj->message)){
+            throw new InvalidDataType('message');
         }
 
-        $commentDetails = $responseObj->comment;
+        $postDetails = $responseObj->post;
 
-        $this->attachmentsCount = $commentDetails->{'attachments-count'};
-        $this->authorAvatarUrl = $commentDetails->{'author-avatar-url'};
-        $this->authorFirstName = $commentDetails->{'author-firstname'};
-        $this->authorLastName = $commentDetails->{'author-lastname'};
-        $this->authorId = $commentDetails->author_id;
-        $this->body = $commentDetails->body;
-        $this->commentabşeId = $commentDetails->{'commentable-id'};
-        $this->commentableType = $commentDetails->commentable_type;
-        $this->dateTime = $commentDetails->datetime;
-        $this->emailedFrom = $commentDetails->{'emailed-from'};
-        $this->id = $commentDetails->id;
-        $this->private = $commentDetails->private;
+        $this->attachmentsCount = $postDetails->{'attachments-count'};
+        $this->authorAvatarUrl = $postDetails->{'author-avatar-url'};
+        $this->authorFirstName = $postDetails->{'author-first-name'};
+        $this->authorId = $postDetails->authorId;
+        $this->authorLastName = $postDetails->{'author-last-name'};
+        $this->body = $postDetails->body;
+        $this->displayBody = $postDetails->{'display-body'};
+        $this->categoryId = $postDetails->{'category-id'};
+        $this->commentsCount = $postDetails->{'comments-count'};
+        $this->id = $postDetails->id;
+        $this->postedOn = $postDetails->{'posted-on'};
+        $this->private = $postDetails->{'private'};
+        $this->projectId = $postDetails->{'project-id'};
+        $this->title = $postDetails->title;
+
     }
 }
