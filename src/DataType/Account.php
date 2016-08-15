@@ -16,7 +16,7 @@ namespace BiberLtd\TeamworkApiWrapper\DataType;
 
 use BiberLtd\TeamworkApiWrapper\Exception\InvalidDataType;
 
-class Account
+class Account extends BaseDataType
 {
 
     /**
@@ -102,33 +102,40 @@ class Account
 
     /**
      * Account constructor.
+     * @param \stdClass|null $responseObj
+     * @throws InvalidDataType
+     */
+    public function __construct(\stdClass $responseObj = null){
+        parent::convertFromResponseObj($responseObj);
+    }
+
+    /**
      * @param \stdClass $responseObj
      * @throws InvalidDataType
      */
-    public function __construct(\stdClass $responseObj){
+    public function convertFromResponseObj(\stdClass $responseObj)
+    {
         if(!isset($responseObj->account)){
             throw new InvalidDataType('account');
         }
 
         $accDetails = $responseObj->account;
 
-        $this->accountHolderId = $accDetails->accountholderid;
+        $this->accountHolderId = $accDetails->{'account-holder-id'};
         $this->cacheUuid = $accDetails->cacheUUID;
         $this->code = $accDetails->code;
         $this->companyId = $accDetails->companyid;
         $this->companyName = $accDetails->companyname;
-        $this->createdAt = $accDetails->createdat;
+        $this->createdAt = $accDetails->{'created-at'};
         $this->dateSignedUp = $accDetails->datesignedup;
-        $this->emailNotificationEnabled = $accDetails->emailnotificationenabled;
+        $this->emailNotificationEnabled = $accDetails->{'email-notification-enabled'};
         $this->id = $accDetails->id;
         $this->lang = $accDetails->lang;
         $this->logo = $accDetails->logo;
         $this->name = $accDetails->name;
         $this->requireHttps = $accDetails->requirehttps;
-        $this->sslEnabled = $accDetails->sslenabled;
-        $this->timeTrackingEnabled = $accDetails->timetrackingenabled;
+        $this->sslEnabled = $accDetails->{'ssl-enabled'};
+        $this->timeTrackingEnabled = $accDetails->{'time-tracking-enabled'};
         $this->url = $accDetails->URL;
-
     }
-
 }
