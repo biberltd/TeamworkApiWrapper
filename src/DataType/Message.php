@@ -10,6 +10,8 @@
  * Check http://team.bodevoffice.com for technical documentation or consult your representative.
  *
  * Contact support@bodevoffice.com for support requests.
+ *
+ * @see http://developer.teamwork.com/datareference#message
  */
 namespace BiberLtd\TeamworkApiWrapper\DataType;
 
