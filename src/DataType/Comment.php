@@ -54,7 +54,7 @@ class Comment extends BaseDataType
     /**
      * @var int
      */
-    public $commentabşeId;
+    public $commentableId;
 
     /**
      * @var string
