@@ -11,7 +11,7 @@
  *
  * Contact support@bodevoffice.com for support requests.
  */
-namespace iberLtd\TeamworkApiWrapper\Response;
+namespace BiberLtd\TeamworkApiWrapper\Response;
 
 
 class ConnectionResponse
