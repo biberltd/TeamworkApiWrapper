@@ -3,7 +3,7 @@
  * 2016 (C) Biber Ltd. | http://www.biberltd.com
  *
  * @license     MIT
- * @author      Can Berkol
+ * @author      Erman Titiz
  *
  * Developed by Biber Ltd. (http://www.biberltd.com), a partner of BOdev Office (http://www.bodevoffice.com)
  *
@@ -18,48 +18,8 @@ namespace BiberLtd\TeamworkApiWrapper\DataType;
 
 use BiberLtd\TeamworkApiWrapper\Exception\InvalidDataType;
 
-class Account extends BaseDataType
+class File extends BaseDataType
 {
-
-    /**
-     * @var int
-     */
-    public $accountHolderId;
-
-    /**
-     * @var string
-     */
-    public $cacheUuid;
-
-    /**
-     * @var int
-     */
-    public $companyName;
-
-    /**
-     * @var string
-     */
-    public $code;
-
-    /**
-     * @var string
-     */
-    public $companyId;
-
-    /**
-     * @var string
-     */
-    public $createdAt;
-
-    /**
-     * @var string
-     */
-    public $dateSignedUp;
-
-    /**
-     * @var bool
-     */
-    public $emailNotificationEnabled;
 
     /**
      * @var int
@@ -67,14 +27,9 @@ class Account extends BaseDataType
     public $id;
 
     /**
-     * @var string
+     * @var int
      */
-    public $lang;
-
-    /**
-     * @var string
-     */
-    public $logo;
+    public $projectId;
 
     /**
      * @var string
@@ -82,25 +37,94 @@ class Account extends BaseDataType
     public $name;
 
     /**
-     * @var bool
+     * @var string
      */
-    public $requireHttps;
-
-    /**
-     * @var bool
-     */
-    public $sslEnabled;
-
-    /**
-     * @var bool
-     */
-    public $timeTrackingEnabled;
+    public $originalName;
 
     /**
      * @var string
      */
-    public $url;
+    public $description;
 
+    /**
+     * @var string
+     */
+    public $extraData;
+
+    /**
+     * @var int
+     */
+    public $size;
+
+    /**
+     * @var int
+     */
+    public $private;
+
+    /**
+     * @var string
+     */
+    public $status;
+
+    /**
+     * @var int
+     */
+    public $version;
+
+    /**
+     * @var int
+     */
+    public $versionId;
+
+    /**
+     * @var array
+     */
+    public $versions;
+
+    /**
+     * @var string
+     */
+    public $fileSource;
+
+    /**
+     * @var int
+     */
+    public $categoryId;
+
+    /**
+     * @var int
+     */
+    public $categoryName;
+
+    /**
+     * @var string
+     */
+    public $uploadedByUserId;
+
+    /**
+     * @var string
+     */
+    public $uploadedByUserFirstName;
+
+    /**
+     * @var string
+     */
+    public $uploadedByUserLastName;
+
+    /**
+     * @var string
+     */
+    public $uploadedDate;
+
+    /**
+     * @var string
+     */
+    public $lastChangedOn;
+
+    /**
+     * @var int
+     */
+    public $commentsCount;
 
     /**
      * Account constructor.
@@ -109,22 +133,27 @@ class Account extends BaseDataType
      */
     public function __construct(\stdClass $responseObj = null){
         $this->propToJsonMap = [
-          'accountHolderId'             => 'account-holder-id',
-          'cacheUuid'                   => 'cacheUUID',
-          'companyId'                   => 'companyid',
-          'companyName'                 => 'companyname',
-          'code'                        => 'code',
-          'createdAt'                   => 'created-at',
-          'dateSignedUp'                => 'datesignedup',
-          'emailNotificationEnabled'    => 'email-notification-enabled',
-          'id'                          => 'id',
-          'lang'                        => 'lang',
-          'logo'                        => 'logo',
-          'name'                        => 'name',
-          'requireHttps'                => 'requirehttps',
-          'sslEnabled'                  => 'ssl-enabled',
-          'timeTrackingEnabled'         => 'time-tracking-enabled',
-          'url'                         => 'URL',
+            'id'                        => 'id',
+            'projectId'                 => 'project-id',
+            'name'                      => 'name',
+            'originalName'              => 'originalName',
+            'description'               => 'description',
+            'extraData'                 => 'extraData',
+            'size'                      => 'size',
+            'private'                   => 'private',
+            'status'                    => 'status',
+            'version'                   => 'version',
+            'versionId'                 => 'version-id',
+            'versions'                  => 'versions',
+            'fileSource'                => 'file-source',
+            'categoryId'                => 'category-id',
+            'categoryName'              => 'category-name',
+            'uploadedByUserId'          => 'uploaded-by-user-id',
+            'uploadedByUserFirstName'   => 'uploaded-by-user-first-name',
+            'uploadedByUserLastName'    => 'uploaded-by-user-last-name',
+            'uploadedDate'              => 'uploaded-date',
+            'lastChangedOn'             => 'last-changed-on',
+            'commentsCount'             => 'comments-count',
         ];
         parent::convertFromResponseObj($responseObj);
     }
@@ -136,26 +165,29 @@ class Account extends BaseDataType
     public function convertFromResponseObj(\stdClass $responseObj)
     {
         if(!isset($responseObj->account)){
-            throw new InvalidDataType('account');
+            throw new InvalidDataType('file');
         }
 
-        $accDetails = $responseObj->account;
-
-        $this->accountHolderId = $accDetails->{'account-holder-id'};
-        $this->cacheUuid = $accDetails->cacheUUID;
-        $this->code = $accDetails->code;
-        $this->companyId = $accDetails->companyid;
-        $this->companyName = $accDetails->companyname;
-        $this->createdAt = $accDetails->{'created-at'};
-        $this->dateSignedUp = $accDetails->datesignedup;
-        $this->emailNotificationEnabled = $accDetails->{'email-notification-enabled'};
-        $this->id = $accDetails->id;
-        $this->lang = $accDetails->lang;
-        $this->logo = $accDetails->logo;
-        $this->name = $accDetails->name;
-        $this->requireHttps = $accDetails->requirehttps;
-        $this->sslEnabled = $accDetails->{'ssl-enabled'};
-        $this->timeTrackingEnabled = $accDetails->{'time-tracking-enabled'};
-        $this->url = $accDetails->URL;
+        $this->id                           = $responseObj->id;
+        $this->projectId                    = $responseObj->{'project-id'};
+        $this->name                         = $responseObj->name;
+        $this->originalName                 = $responseObj->originalName;
+        $this->description                  = $responseObj->description;
+        $this->extraData                    = $responseObj->extraData;
+        $this->size                         = $responseObj->size;
+        $this->private                      = $responseObj->private;
+        $this->status                       = $responseObj->status;
+        $this->version                      = $responseObj->version;
+        $this->versionId                    = $responseObj->{'version-id'};
+        $this->versions                     = $responseObj->versions;
+        $this->fileSource                   = $responseObj->{'file-source'};
+        $this->categoryId                   = $responseObj->{'category-id'};
+        $this->categoryName                 = $responseObj->{'category-name'};
+        $this->uploadedByUserId             = $responseObj->{'uploaded-by-user-id'};
+        $this->uploadedByUserFirstName      = $responseObj->{'uploaded-by-user-first-name'};
+        $this->uploadedByUserLastName       = $responseObj->{'uploaded-by-user-last-name'};
+        $this->uploadedDate                 = $responseObj->{'uploaded-date'};
+        $this->lastChangedOn                = $responseObj->{'last-changed-on'};
+        $this->commentsCount                = $responseObj->{'comments-count'};
     }
 }
