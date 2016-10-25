@@ -9,26 +9,24 @@
 namespace BiberLtd\TeamworkApiWrapper\DataType;
 use BiberLtd\TeamworkApiWrapper\DataType\File;
 
-class Files
+class Files extends FileAbstract
 {
     /**
      * @var array
      */
     public $files;
 
-    public function __construct(\stdClass $responseObj = null){
-        parent::convertFromResponseObj($responseObj);
-    }
+    protected $extendData=array();
 
-    /**
-     * @param \stdClass $responseObj
-     */
-    public function convertFromResponseObj(\stdClass $responseObj)
-    {
+    public function __construct(\stdClass $responseObj = null){
         $files = [];
         foreach($responseObj->files as $file)
         {
-            $files[]= new File($file);
+            $new_file = new File($file);
+            $new_file->extendData = [
+                'commentsCountRead'         => 'read-comments-count'
+            ];
+            $files[] = $new_file;
         }
         $this->files = $files;
     }

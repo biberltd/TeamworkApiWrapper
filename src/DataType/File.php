@@ -18,176 +18,47 @@ namespace BiberLtd\TeamworkApiWrapper\DataType;
 
 use BiberLtd\TeamworkApiWrapper\Exception\InvalidDataType;
 
-class File extends BaseDataType
+class File extends FileAbstract
 {
 
-    /**
-     * @var int
-     */
-    public $id;
-
-    /**
-     * @var int
-     */
-    public $projectId;
-
-    /**
-     * @var string
-     */
-    public $name;
-
-    /**
-     * @var string
-     */
-    public $originalName;
-
-    /**
-     * @var string
-     */
-    public $description;
-
-    /**
-     * @var string
-     */
-    public $extraData;
-
-    /**
-     * @var int
-     */
-    public $size;
-
-    /**
-     * @var int
-     */
-    public $private;
-
-    /**
-     * @var string
-     */
-    public $status;
-
-    /**
-     * @var int
-     */
-    public $version;
-
-    /**
-     * @var int
-     */
+    public $commentsCountRead;
+    public $commentNotifyIds;
+    public $privacyHtml;
     public $versionId;
+    public $downloadUrl;
+    public $fileLocked;
+    public $thumbUrl;
+    public $displayName;
+    public $combinedFollowersCount;
+    public $privacyText;
+    public $latestVersion;
+    public $projectName;
+    public $relatedItems;
 
-    /**
-     * @var array
-     */
-    public $versions;
-
-    /**
-     * @var string
-     */
-    public $fileSource;
-
-    /**
-     * @var int
-     */
-    public $categoryId;
-
-    /**
-     * @var int
-     */
-    public $categoryName;
-
-    /**
-     * @var string
-     */
-    public $uploadedByUserId;
-
-    /**
-     * @var string
-     */
-    public $uploadedByUserFirstName;
-
-    /**
-     * @var string
-     */
-    public $uploadedByUserLastName;
-
-    /**
-     * @var string
-     */
-    public $uploadedDate;
-
-    /**
-     * @var string
-     */
-    public $lastChangedOn;
-
-    /**
-     * @var int
-     */
-    public $commentsCount;
-
+    protected $extendData=array();
     /**
      * Account constructor.
      * @param \stdClass|null $responseObj
      * @throws InvalidDataType
      */
     public function __construct(\stdClass $responseObj = null){
-        $this->propToJsonMap = [
-            'id'                        => 'id',
-            'projectId'                 => 'project-id',
-            'name'                      => 'name',
-            'originalName'              => 'originalName',
-            'description'               => 'description',
-            'extraData'                 => 'extraData',
-            'size'                      => 'size',
-            'private'                   => 'private',
-            'status'                    => 'status',
-            'version'                   => 'version',
+        $this->extendData = [
+            'commentsCountRead'         => 'comments-count-read',
+            'commentNotifyIds'          => 'commentNotifyIds',
+            'privacyHtml'               => 'privacyHtml',
             'versionId'                 => 'version-id',
-            'versions'                  => 'versions',
-            'fileSource'                => 'file-source',
-            'categoryId'                => 'category-id',
-            'categoryName'              => 'category-name',
-            'uploadedByUserId'          => 'uploaded-by-user-id',
-            'uploadedByUserFirstName'   => 'uploaded-by-user-first-name',
-            'uploadedByUserLastName'    => 'uploaded-by-user-last-name',
-            'uploadedDate'              => 'uploaded-date',
-            'lastChangedOn'             => 'last-changed-on',
-            'commentsCount'             => 'comments-count',
+            'downloadUrl'               => 'download-URL',
+            'fileLocked'                => 'fileLocked',
+            'thumbUrl'                  => 'thumbURL',
+            'displayName'               => 'display-name',
+            'combinedFollowersCount'    => 'combinedFollowersCount',
+            'privacyText'               => 'privacyText',
+            'latestVersion'             => 'latest-version',
+            'projectName'               => 'project-name',
+            'relatedItems'              => 'related-items',
         ];
-        parent::convertFromResponseObj($responseObj);
+
     }
 
-    /**
-     * @param \stdClass $responseObj
-     * @throws InvalidDataType
-     */
-    public function convertFromResponseObj(\stdClass $responseObj)
-    {
-        if(!isset($responseObj->account)){
-            throw new InvalidDataType('file');
-        }
 
-        $this->id                           = $responseObj->id;
-        $this->projectId                    = $responseObj->{'project-id'};
-        $this->name                         = $responseObj->name;
-        $this->originalName                 = $responseObj->originalName;
-        $this->description                  = $responseObj->description;
-        $this->extraData                    = $responseObj->extraData;
-        $this->size                         = $responseObj->size;
-        $this->private                      = $responseObj->private;
-        $this->status                       = $responseObj->status;
-        $this->version                      = $responseObj->version;
-        $this->versionId                    = $responseObj->{'version-id'};
-        $this->versions                     = $responseObj->versions;
-        $this->fileSource                   = $responseObj->{'file-source'};
-        $this->categoryId                   = $responseObj->{'category-id'};
-        $this->categoryName                 = $responseObj->{'category-name'};
-        $this->uploadedByUserId             = $responseObj->{'uploaded-by-user-id'};
-        $this->uploadedByUserFirstName      = $responseObj->{'uploaded-by-user-first-name'};
-        $this->uploadedByUserLastName       = $responseObj->{'uploaded-by-user-last-name'};
-        $this->uploadedDate                 = $responseObj->{'uploaded-date'};
-        $this->lastChangedOn                = $responseObj->{'last-changed-on'};
-        $this->commentsCount                = $responseObj->{'comments-count'};
-    }
 }
