@@ -34,7 +34,7 @@ class Company extends BaseDataType
     /**
      * @var bool
      */
-    public $canSeePrivate;
+    public $canSeePrivate = false;
 
     /**
      * @var string
@@ -121,10 +121,9 @@ class Company extends BaseDataType
 
         $compDetails = $responseObj->comment;
 
-
         $this->addressOne = $compDetails->address_one;
         $this->addressTwo = $compDetails->address_two;
-        $this->canSeePrivate = $compDetails->canSeePrivate;
+        $this->canSeePrivate = $this->setCanSeePrivate($compDetails->can_see_private ?? $this->canSeePrivate);
         $this->city = $compDetails->city;
         $this->companyNameUrl = $compDetails->company_name_url;
         $this->country = $compDetails->country;
@@ -135,6 +134,14 @@ class Company extends BaseDataType
         $this->state = $compDetails->state;
         $this->website = $compDetails->website;
         $this->zip = $compDetails->zip;
+    }
 
+    /**
+     * @param bool $status
+     * @return $this
+     */
+    public function setCanSeePrivate(bool $status = false){
+        $this->canSeePrivate = $status;
+        return $this;
     }
 }
