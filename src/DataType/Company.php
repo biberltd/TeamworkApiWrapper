@@ -98,7 +98,7 @@ class Company extends BaseDataType
             'canSeePrivate'             => 'can_see_private',
             'city'                      => 'city',
             'country'                   => 'country',
-            'companyNameUrl'            => 'company?name_url',
+            'companyNameUrl'            => 'company_name_url',
             'fax'                       => 'fax',
             'id'                        => 'id',
             'name'                      => 'name',

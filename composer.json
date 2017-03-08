@@ -4,14 +4,20 @@
   "keywords": ["teamwork","teamwork.com","teamworkpm","php"],
   "homepage": "http://github.com/biberltd/TeamworkApiWrapper",
   "license": "MIT",
+  "support": {
+    "email": "support@bodevoffice.com"
+  },
   "authors": [
     {
       "name": "Can Berkol",
-      "email": "can.berkol@biberltd.com"
+      "email": "can.berkol@bodevoffice.com",
+      "homepage": "http://www.bodevoffice.com/team/canberkol"
     }
   ],
+  "type": "library",
   "require": {
-    "php" : "^7.0"
+    "php" : "^7.0",
+    "guzzlehttp/guzzle": "~6.0"
   },
   "autoload": {
     "psr-4": { "BiberLtd\\TeamworkApiWrapper\\": "src/" }
