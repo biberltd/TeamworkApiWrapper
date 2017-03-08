@@ -54,12 +54,14 @@ class Comment extends BaseDataType
     /**
      * @var int
      */
-    public $commentabşeId;
+    public $commentableId;
 
     /**
+     * todo_items, milestones, notebooks, links, files
      * @var string
      */
-    public $commentableType;
+    public $commentableType = "todo_items";
+
     /**
      * @var string
      */
@@ -77,8 +79,7 @@ class Comment extends BaseDataType
     /**
      * @var bool
      */
-    public $private;
-
+    public $private = false;
 
     /**
      * Account constructor.
@@ -121,11 +122,30 @@ class Comment extends BaseDataType
         $this->authorLastName = $commentDetails->{'author-lastname'};
         $this->authorId = $commentDetails->author_id;
         $this->body = $commentDetails->body;
-        $this->commentabşeId = $commentDetails->{'commentable-id'};
+        $this->commentableId = $commentDetails->{'commentable-id'};
         $this->commentableType = $commentDetails->commentable_type;
         $this->dateTime = $commentDetails->datetime;
         $this->emailedFrom = $commentDetails->{'emailed-from'};
         $this->id = $commentDetails->id;
         $this->private = $commentDetails->private;
+    }
+
+    /**
+     * @param string $type
+     * @return $this
+     */
+    public function setCommentableType(string $type){
+        switch($type){
+            case  'todo_items':
+            case  'milestones':
+            case  'notebooks':
+            case  'links':
+            case  'files':
+                break;
+            default:
+                return $this;
+        }
+        $this->commentableType = $type;
+        return $this;
     }
 }
