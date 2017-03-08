@@ -15,6 +15,7 @@ namespace BiberLtd\TeamworkApiWrapper\Connector;
 
 
 use BiberLtd\TeamworkApiWrapper\Exception\MissingConnectionParameter;
+use GuzzleHttp\Client;
 use iberLtd\TeamworkApiWrapper\Response\ConnectionResponse;
 
 class TeamworkConnector
@@ -28,13 +29,17 @@ class TeamworkConnector
      */
     protected $apiKey;
     /**
+     * @var integer
+     */
+    protected $timeout;
+    /**
      * @var string
      */
     protected $password;
     /**
-     * @var resource
+     * @var Client
      */
-    private $connection;
+    private $client;
 
     /**
      * TeamworkConnector constructor.
@@ -44,24 +49,50 @@ class TeamworkConnector
         $this->siteDomain = isset($config['siteDomain']) ? $config['siteDomain'] : null;
         $this->apiKey = isset($config['apiKey']) ? $config['apiKey'] : null;
         $this->password = isset($config['password']) ? $config['password'] : md5('BOdev');
+        $this->timeout = isset($config['timeout']) ? $config['timeout'] : 10;
 
-        $this->connection = curl_init();
+        $this->setClient($this->siteDomain);
     }
 
     /**
-     * @return mixed
+     * @param string|null $url
+     * @param int $timeout
+     * @return $this
      */
-    public function getConnection(){
-        return $this->connection;
+    public function setClient(string $url = null, integer $timeout = 10){
+        $this->client = new Client(
+            [
+                'base_uri'      => $url ?? $this->siteDomain,
+                'timeout'       => $this->timeout
+            ]
+        );
+        /**
+         * Update runtime settings
+         */
+        $this->siteDomain = $url ?? $this->url;
+        $this->timeout = $timeout;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return Client
+     */
+    public function getClient(){
+        return $this->client;
+    }
+
+    /**
+     * @param string $endpoint
+     * @param string|null $method
+     * @param array $options
+     * @return mixed|\Psr\Http\Message\ResponseInterface
      * @throws MissingConnectionParameter
      */
-    public function connect(){
-
-        $connection = $this->getConnection();
+    public function connectTo(string $endpoint, string $method = null, array $options = []){
+        if(!$this->client instanceof Client){
+            $this->setClient();
+        }
 
         if(is_null($this->siteDomain)){
             throw new MissingConnectionParameter('site domain (siteDomain)');
@@ -71,34 +102,19 @@ class TeamworkConnector
             throw new MissingConnectionParameter('api key (apiKey)');
         }
 
-        curl_setopt($connection, CURLOPT_URL, $this->siteDomain);
-        curl_setopt($connection, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($connection, CURLOPT_USERPWD, $this->apiKey.':'.$this->password);
+        $defaultOptions['headers'] = [
+          'Accept'          => 'application/json',
+          'Content-Type'    => 'application/json',
+          'Authorization'   => 'Basic '.$this->apiKey.':'.$this->password,
+          'X-Authorization'   => 'Basic '.$this->apiKey.':'.$this->password,
+        ];
 
-        curl_setopt($connection, CURLOPT_TIMEOUT, 30);
-        curl_setopt($connection, CURLOPT_RETURNTRANSFER,1);
+        $method = $method ?? 'GET';
 
-        return $connection;
-        $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);   //get status code
-        $result=curl_exec ($ch);
-        curl_close ($ch);
-    }
+        if(!is_null($options)){
+            $options = array_merge($defaultOptions, $options);
+        }
 
-    /**
-     * @param $connection
-     */
-    protected function disconnect($connection){
-        curl_close($connection);
-    }
-
-    public function execute(){
-        $connection = $this->connect();
-        $httpStatusCode = curl_getinfo($connection, CURLINFO_HTTP_CODE);
-
-        $result = curl_exec($connection);
-        $errorCode = curl_errno($connection);
-        $errorMsg = curl_error($connection);
-
-        return new ConnectionResponse($result, $httpStatusCode, $errorCode, $errorMsg);
+       return $this->client->request($method, $this->siteDomain.'/'.$endpoint, $options);
     }
 }
