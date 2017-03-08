@@ -1,6 +1,6 @@
 <?php
 /**
- * 2016 (C) Biber Ltd. | http://www.biberltd.com
+ * 2017 (C) Biber Ltd. | http://www.biberltd.com
  *
  * @license     MIT
  * @author      Can Berkol
@@ -37,9 +37,10 @@ class Category extends BaseDataType
     public $name;
 
     /**
+     * Parent category id, default = 0 (Root)
      * @var int
      */
-    public $parentId;
+    public $parentId = 0;
 
     /**
      * @var int
@@ -47,6 +48,7 @@ class Category extends BaseDataType
     public $projectId;
 
     /**
+     * Type of category.
      * @var string
      */
     public $type;
