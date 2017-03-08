@@ -1,6 +1,6 @@
 <?php
 /**
- * 2016 (C) Biber Ltd. | http://www.biberltd.com
+ * 2017 (C) Biber Ltd. | http://www.biberltd.com
  *
  * @license     MIT
  * @author      Can Berkol
@@ -37,12 +37,13 @@ class Account extends BaseDataType
     public $companyName;
 
     /**
+     * TeamWork site code.
      * @var string
      */
     public $code;
 
     /**
-     * @var string
+     * @var int
      */
     public $companyId;
 
@@ -77,6 +78,7 @@ class Account extends BaseDataType
     public $logo;
 
     /**
+     * TeamWork account name.
      * @var string
      */
     public $name;
