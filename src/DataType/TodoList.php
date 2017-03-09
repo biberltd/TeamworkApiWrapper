@@ -112,7 +112,6 @@ class TodoList extends BaseDataType
         parent::convertFromResponseObj($responseObj);
     }
 
-
     /**
      * @param \stdClass $responseObj
      * @throws InvalidDataType

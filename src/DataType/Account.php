@@ -20,7 +20,6 @@ use BiberLtd\TeamworkApiWrapper\Exception\InvalidDataType;
 
 class Account extends BaseDataType
 {
-
     /**
      * @var int
      */
@@ -48,12 +47,12 @@ class Account extends BaseDataType
     public $companyId;
 
     /**
-     * @var string
+     * @var \DateTime
      */
     public $createdAt;
 
     /**
-     * @var string
+     * @var \DateTime
      */
     public $dateSignedUp;
 
@@ -137,27 +136,349 @@ class Account extends BaseDataType
      */
     public function convertFromResponseObj(\stdClass $responseObj)
     {
-        if(!isset($responseObj->account)){
+        if (!isset($responseObj->{'account'})) {
             throw new InvalidDataType('account');
         }
+        $responseObj = $responseObj->person;
 
-        $accDetails = $responseObj->account;
-
-        $this->accountHolderId = $accDetails->{'account-holder-id'};
-        $this->cacheUuid = $accDetails->cacheUUID;
-        $this->code = $accDetails->code;
-        $this->companyId = $accDetails->companyid;
-        $this->companyName = $accDetails->companyname;
-        $this->createdAt = $accDetails->{'created-at'};
-        $this->dateSignedUp = $accDetails->datesignedup;
-        $this->emailNotificationEnabled = $accDetails->{'email-notification-enabled'};
-        $this->id = $accDetails->id;
-        $this->lang = $accDetails->lang;
-        $this->logo = $accDetails->logo;
-        $this->name = $accDetails->name;
-        $this->requireHttps = $accDetails->requirehttps;
-        $this->sslEnabled = $accDetails->{'ssl-enabled'};
-        $this->timeTrackingEnabled = $accDetails->{'time-tracking-enabled'};
-        $this->url = $accDetails->URL;
+        foreach ($this->propToJsonMap as $propIndex => $propValue) {
+            if (!isset($responseObj->{$propValue})) {
+                continue;
+            }
+            switch ($propIndex) {
+                case 'companyId':
+                case 'id':
+                case 'accountHolderId':
+                    $responseObj->{$propValue} = (int) $responseObj->{$propValue};
+                    break;
+                case 'dateSignedUp':
+                case 'createdAt':
+                    $tmpDate = \DateTime::createFromFormat('Y-m-d H:i:s', str_replace(['T', 'Z'], [' ', ''], $responseObj->{$propValue}));
+                    $responseObj->{$propValue} = $tmpDate;
+                    unset($tmpDate);
+                    break;
+            }
+            $setFunc = 'set' . ucfirst($propIndex);
+            $this->$setFunc($responseObj->{$propValue});
+        }
     }
+
+    /**
+     * @return int
+     */
+    public function getAccountHolderId()
+    {
+        return $this->accountHolderId;
+    }
+
+    /**
+     * @param int $accountHolderId
+     * @return Account
+     */
+    public function setAccountHolderId(int $accountHolderId): Account
+    {
+        $this->accountHolderId = $accountHolderId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCacheUuid()
+    {
+        return $this->cacheUuid;
+    }
+
+    /**
+     * @param string $cacheUuid
+     * @return Account
+     */
+    public function setCacheUuid(string $cacheUuid): Account
+    {
+        $this->cacheUuid = $cacheUuid;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCompanyName()
+    {
+        return $this->companyName;
+    }
+
+    /**
+     * @param int $companyName
+     * @return Account
+     */
+    public function setCompanyName(int $companyName): Account
+    {
+        $this->companyName = $companyName;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param string $code
+     * @return Account
+     */
+    public function setCode(string $code): Account
+    {
+        $this->code = $code;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCompanyId()
+    {
+        return $this->companyId;
+    }
+
+    /**
+     * @param int $companyId
+     * @return Account
+     */
+    public function setCompanyId(int $companyId): Account
+    {
+        $this->companyId = $companyId;
+        return $this;
+    }
+
+    /**
+     * @param bool $forTw
+     * @return \DateTime|string
+     */
+    public function getCreatedAt(bool $forTw = false)
+    {
+        if(!$forTw){
+            return $this->createdAt;
+        }
+        return $this->createdAt->format('Y-m-d\TH:i:s\Z');
+    }
+
+    /**
+     * @param string $createdAt
+     * @return Account
+     */
+    public function setCreatedAt(string $createdAt): Account
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    /**
+     * @param bool $forTw
+     * @return \DateTime|string
+     */
+    public function getDateSignedUp(bool $forTw = false)
+    {
+        if(!$forTw){
+            return $this->dateSignedUp;
+        }
+        return $this->dateSignedUp->format('Y-m-d\TH:i:s\Z');
+    }
+
+    /**
+     * @param string $dateSignedUp
+     * @return Account
+     */
+    public function setDateSignedUp(string $dateSignedUp): Account
+    {
+        $this->dateSignedUp = $dateSignedUp;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getEmailNotificationEnabled(){
+        return $this->emailNotificationEnabled;
+    }
+    /**
+     * @return bool
+     */
+    public function isEmailNotificationEnabled()
+    {
+        return $this->emailNotificationEnabled;
+    }
+
+    /**
+     * @param bool $emailNotificationEnabled
+     * @return Account
+     */
+    public function setEmailNotificationEnabled(bool $emailNotificationEnabled): Account
+    {
+        $this->emailNotificationEnabled = $emailNotificationEnabled;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     * @return Account
+     */
+    public function setId(int $id): Account
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLang()
+    {
+        return $this->lang;
+    }
+
+    /**
+     * @param string $lang
+     * @return Account
+     */
+    public function setLang(string $lang): Account
+    {
+        $this->lang = $lang;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogo()
+    {
+        return $this->logo;
+    }
+
+    /**
+     * @param string $logo
+     * @return Account
+     */
+    public function setLogo(string $logo = ''): Account
+    {
+        $this->logo = $logo;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return Account
+     */
+    public function setName(string $name): Account
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function getRequiredHttps(){
+        $this->requireHttps;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRequireHttps()
+    {
+        return $this->requireHttps;
+    }
+
+    /**
+     * @param bool $requireHttps
+     * @return Account
+     */
+    public function setRequireHttps(bool $requireHttps = false): Account
+    {
+        $this->requireHttps = $requireHttps;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getSslEnabled(){
+        return $this->sslEnabled;
+    }
+    /**
+     * @return bool
+     */
+    public function isSslEnabled()
+    {
+        return $this->sslEnabled;
+    }
+
+    /**
+     * @param bool $sslEnabled
+     * @return Account
+     */
+    public function setSslEnabled(bool $sslEnabled = true): Account
+    {
+        $this->sslEnabled = $sslEnabled;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getTimeTrackingEnabled(){
+        return $this->timeTrackingEnabled;
+    }
+    /**
+     * @return bool
+     */
+    public function isTimeTrackingEnabled()
+    {
+        return $this->timeTrackingEnabled;
+    }
+
+    /**
+     * @param bool $timeTrackingEnabled
+     * @return Account
+     */
+    public function setTimeTrackingEnabled(bool $timeTrackingEnabled = true): Account
+    {
+        $this->timeTrackingEnabled = $timeTrackingEnabled;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * @param string $url
+     * @return Account
+     */
+    public function setUrl(string $url = ''): Account
+    {
+        $this->url = $url;
+        return $this;
+    }
+
 }
