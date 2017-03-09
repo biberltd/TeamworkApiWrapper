@@ -92,5 +92,13 @@ abstract class BaseDataType{
         return $repObject;
     }
 
+    /**
+     * @return array
+     */
+    public function getPropertyMapping()
+    {
+        return $this->propToJsonMap;
+    }
+
     abstract public function convertFromResponseObj(\stdClass $object);
 }

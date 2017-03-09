@@ -17,6 +17,8 @@
 namespace BiberLtd\TeamworkApiWrapper\DataType;
 
 
+use BiberLtd\TeamworkApiWrapper\Exception\InvalidDataType;
+
 class Milestone extends BaseDataType
 {
     /**
@@ -122,9 +124,14 @@ class Milestone extends BaseDataType
 
     /**
      * @param \stdClass $responseObj
+     * @throws InvalidDataType
      */
     public function convertFromResponseObj(\stdClass $responseObj)
     {
+        if(!isset($responseObj->notebook)){
+            throw new InvalidDataType('notebook');
+        }
+        $responseObj = $responseObj->notebook;
         foreach ($this->propToJsonMap as $propIndex => $propValue)
         {
             if(!isset($responseObj->{$propValue}))
@@ -150,8 +157,8 @@ class Milestone extends BaseDataType
                     $responseObj->{$propValue} = $tmpCollection;
                     unset($tmpCollection);
                     break;
-                case 'created-on':
-                case 'completed-on':
+                case 'createdOn':
+                case 'completedOn':
                     $tmpDate =  \DateTime::createFromFormat('Y-m-d H:i:s', str_replace(['T', 'Z'], [' ', ''], $responseObj->{$propValue}));
                     $responseObj->{$propValue} = $tmpDate;
                     unset($tmpDate);
@@ -165,14 +172,6 @@ class Milestone extends BaseDataType
             $setFunc = 'set'.ucfirst($propIndex);
             $this->$setFunc($responseObj->{$propValue});
         }
-    }
-
-    /**
-     * @return array
-     */
-    public function getPropertyMapping()
-    {
-        return $this->propToJsonMap;
     }
 
     /**
