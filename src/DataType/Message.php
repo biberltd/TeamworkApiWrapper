@@ -1,6 +1,6 @@
 <?php
 /**
- * 2016 (C) Biber Ltd. | http://www.biberltd.com
+ * 2017 (C) Biber Ltd. | http://www.biberltd.com
  *
  * @license     MIT
  * @author      Can Berkol
@@ -79,7 +79,7 @@ class Message extends BaseDataType
     /**
      * @var bool
      */
-    public $private;
+    public $private = false;
 
     /**
      * @var int
@@ -142,6 +142,22 @@ class Message extends BaseDataType
         $this->private = $postDetails->{'private'};
         $this->projectId = $postDetails->{'project-id'};
         $this->title = $postDetails->title;
+    }
 
+    /**
+     * @param bool $status
+     * @return $this
+     */
+    public function setPrivate(bool $status = false){
+        $this->private = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPrivate(){
+        return $this->private;
     }
 }
