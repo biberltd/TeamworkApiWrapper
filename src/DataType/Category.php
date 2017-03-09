@@ -71,24 +71,142 @@ class Category extends BaseDataType
         parent::convertFromResponseObj($responseObj);
     }
 
-    /**
-     * @param \stdClass $responseObj
-     * @throws InvalidDataType
-     */
     public function convertFromResponseObj(\stdClass $responseObj)
     {
-        if(!isset($responseObj->category)){
+        if (!isset($responseObj->{'category'})) {
             throw new InvalidDataType('category');
         }
+        $responseObj = $responseObj->category;
 
-        $catDetails = $responseObj->category;
-
-        $this->id = $catDetails->id;
-        $this->elementsCount = $catDetails->elements_count;
-        $this->name = $catDetails->name;
-        $this->parentId = $catDetails->{'parent-id'};
-        $this->projectId = $catDetails->{'project-id'};
-        $this->type = $catDetails->type;
-
+        foreach ($this->propToJsonMap as $propIndex => $propValue) {
+            if (!isset($responseObj->{$propValue})) {
+                continue;
+            }
+            switch ($propIndex) {
+                case 'elementsCount':
+                case 'id':
+                case 'projectId':
+                case 'parentId':
+                    $responseObj->{$propValue} = (int) $responseObj->{$propValue};
+                    break;
+                case 'dateSignedUp':
+                case 'createdAt':
+                    $tmpDate = \DateTime::createFromFormat('Y-m-d H:i:s', str_replace(['T', 'Z'], [' ', ''], $responseObj->{$propValue}));
+                    $responseObj->{$propValue} = $tmpDate;
+                    unset($tmpDate);
+                    break;
+            }
+            $setFunc = 'set' . ucfirst($propIndex);
+            $this->$setFunc($responseObj->{$propValue});
+        }
     }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     * @return Category
+     */
+    public function setId(int $id): Category
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getElementsCount()
+    {
+        return $this->elementsCount;
+    }
+
+    /**
+     * @param int $elementsCount
+     * @return Category
+     */
+    public function setElementsCount(int $elementsCount = 1): Category
+    {
+        $this->elementsCount = $elementsCount;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return Category
+     */
+    public function setName(string $name): Category
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getParentId()
+    {
+        return $this->parentId;
+    }
+
+    /**
+     * @param int $parentId
+     * @return Category
+     */
+    public function setParentId(int $parentId): Category
+    {
+        $this->parentId = $parentId;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getProjectId()
+    {
+        return $this->projectId;
+    }
+
+    /**
+     * @param int $projectId
+     * @return Category
+     */
+    public function setProjectId(int $projectId): Category
+    {
+        $this->projectId = $projectId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     * @return Category
+     */
+    public function setType(string $type): Category
+    {
+        $this->type = $type;
+        return $this;
+    }
+
 }
