@@ -139,7 +139,7 @@ class Message extends BaseDataType
         $this->commentsCount = $postDetails->{'comments-count'};
         $this->id = $postDetails->id;
         $this->postedOn = $postDetails->{'posted-on'};
-        $this->private = $postDetails->{'private'};
+        $this->private = isset($postDetails->private) ? $postDetails->private : $this->private;
         $this->projectId = $postDetails->{'project-id'};
         $this->title = $postDetails->title;
     }

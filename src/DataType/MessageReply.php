@@ -1,6 +1,6 @@
 <?php
 /**
- * 2016 (C) Biber Ltd. | http://www.biberltd.com
+ * 2017 (C) Biber Ltd. | http://www.biberltd.com
  *
  * @license     MIT
  * @author      Can Berkol
@@ -67,7 +67,7 @@ class MessageReply extends BaseDataType
     /**
      * @var bool
      */
-    public $private;
+    public $private = false;
     /**
      * @var int
      */
@@ -119,10 +119,25 @@ class MessageReply extends BaseDataType
         $this->id = $responseObj->id;
         $this->messageId = $responseObj->messageId;
         $this->postedOn = $responseObj->{'posted-on'};
-        $this->private = $responseObj->private;
         $this->replyNo = $responseObj->replyNo;
         $this->title = $responseObj->title;
+        $this->setPrivate(isset($responseObj->private) ? $responseObj->private : null);
+    }
 
+    /**
+     * @param bool|null $status
+     * @return $this
+     */
+    public function setPrivate(bool $status = null){
+        $status = $status ?? $this->private;
+        $this->private = $status;
+        return $this;
+    }
 
+    /**
+     * @return bool
+     */
+    public function isPrivate(){
+        return $this->private;
     }
 }
