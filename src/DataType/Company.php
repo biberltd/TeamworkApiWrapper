@@ -115,25 +115,23 @@ class Company extends BaseDataType
      */
     public function convertFromResponseObj(\stdClass $responseObj)
     {
-        if(!isset($responseObj->company)){
+        if (!isset($responseObj->company)) {
             throw new InvalidDataType('company');
         }
+        $responseObj = $responseObj->company;
 
-        $compDetails = $responseObj->comment;
-
-        $this->addressOne = $compDetails->address_one;
-        $this->addressTwo = $compDetails->address_two;
-        $this->canSeePrivate = $this->setCanSeePrivate($compDetails->can_see_private ?? $this->canSeePrivate);
-        $this->city = $compDetails->city;
-        $this->companyNameUrl = $compDetails->company_name_url;
-        $this->country = $compDetails->country;
-        $this->fax = $compDetails->fax;
-        $this->id = $compDetails->id;
-        $this->name = $compDetails->name;
-        $this->phone = $compDetails->phone;
-        $this->state = $compDetails->state;
-        $this->website = $compDetails->website;
-        $this->zip = $compDetails->zip;
+        foreach ($this->propToJsonMap as $propIndex => $propValue) {
+            if (!isset($responseObj->{$propValue})) {
+                continue;
+            }
+            switch ($propIndex) {
+                case 'id':
+                    $responseObj->{$propValue} = (int) $responseObj->{$propValue};
+                    break;
+            }
+            $setFunc = 'set' . ucfirst($propIndex);
+            $this->$setFunc($responseObj->{$propValue});
+        }
     }
 
     /**
@@ -144,4 +142,233 @@ class Company extends BaseDataType
         $this->canSeePrivate = $status;
         return $this;
     }
+
+    /**
+     * @return bool
+     */
+    public function getCanSeePrivate(){
+        return $this->canSeePrivate;
+    }
+
+    /**
+     * @return bool
+     */
+    public function canSeePrivate(){
+        return $this->getCanSeePrivate();
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddressOne()
+    {
+        return $this->addressOne;
+    }
+
+    /**
+     * @param string $addressOne
+     * @return Company
+     */
+    public function setAddressOne(string $addressOne): Company
+    {
+        $this->addressOne = $addressOne;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddressTwo()
+    {
+        return $this->addressTwo;
+    }
+
+    /**
+     * @param string $addressTwo
+     * @return Company
+     */
+    public function setAddressTwo(string $addressTwo): Company
+    {
+        $this->addressTwo = $addressTwo;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * @param string $city
+     * @return Company
+     */
+    public function setCity(string $city): Company
+    {
+        $this->city = $city;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCompanyNameUrl()
+    {
+        return $this->companyNameUrl;
+    }
+
+    /**
+     * @param string $companyNameUrl
+     * @return Company
+     */
+    public function setCompanyNameUrl(string $companyNameUrl = ''): Company
+    {
+        $this->companyNameUrl = $companyNameUrl;
+        return $this;
+    }
+
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * @param string $country
+     * @return Company
+     */
+    public function setCountry(string $country): Company
+    {
+        $this->country = $country;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFax()
+    {
+        return $this->fax;
+    }
+
+    /**
+     * @param string $fax
+     * @return Company
+     */
+    public function setFax(string $fax): Company
+    {
+        $this->fax = $fax;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     * @return Company
+     */
+    public function setId(int $id): Company
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return Company
+     */
+    public function setName(string $name): Company
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param string $phone
+     * @return Company
+     */
+    public function setPhone(string $phone): Company
+    {
+        $this->phone = $phone;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param string $state
+     * @return Company
+     */
+    public function setState(string $state): Company
+    {
+        $this->state = $state;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWebsite()
+    {
+        return $this->website;
+    }
+
+    /**
+     * @param string $website
+     * @return Company
+     */
+    public function setWebsite(string $website): Company
+    {
+        $this->website = $website;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getZip()
+    {
+        return $this->zip;
+    }
+
+    /**
+     * @param string $zip
+     * @return Company
+     */
+    public function setZip(string $zip): Company
+    {
+        $this->zip = $zip;
+        return $this;
+    }
+
+
 }
