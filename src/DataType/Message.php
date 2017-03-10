@@ -92,7 +92,7 @@ class Message extends BaseDataType
     public $title;
 
     /**
-     * Account constructor.
+     * Message constructor.
      * @param \stdClass|null $responseObj
      * @throws InvalidDataType
      */

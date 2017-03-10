@@ -78,7 +78,7 @@ class MessageReply extends BaseDataType
     public $title;
 
     /**
-     * Account constructor.
+     * MessageReply constructor.
      * @param \stdClass|null $responseObj
      * @throws InvalidDataType
      */
