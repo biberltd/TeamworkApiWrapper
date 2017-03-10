@@ -121,7 +121,7 @@ class TodoList extends BaseDataType
         if (!isset($responseObj->{'todo-list'})) {
             throw new InvalidDataType('todo-list');
         }
-        $responseObj = $responseObj->person;
+        $responseObj = $responseObj->{'todo-list'};
 
         foreach ($this->propToJsonMap as $propIndex => $propValue) {
             if (!isset($responseObj->{$propValue})) {
