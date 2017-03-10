@@ -128,10 +128,10 @@ class Milestone extends BaseDataType
      */
     public function convertFromResponseObj(\stdClass $responseObj)
     {
-        if(!isset($responseObj->notebook)){
-            throw new InvalidDataType('notebook');
+        if(!isset($responseObj->milestone)){
+            throw new InvalidDataType('milestone');
         }
-        $responseObj = $responseObj->notebook;
+        $responseObj = $responseObj->milestone;
         foreach ($this->propToJsonMap as $propIndex => $propValue)
         {
             if(!isset($responseObj->{$propValue}))
