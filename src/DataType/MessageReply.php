@@ -61,7 +61,7 @@ class MessageReply extends BaseDataType
      */
     public $messageId;
     /**
-     * @var string
+     * @var \DateTime
      */
     public $postedOn;
     /**
@@ -108,20 +108,34 @@ class MessageReply extends BaseDataType
      */
     public function convertFromResponseObj(\stdClass $responseObj)
     {
-        $this->attachmentsCount = $responseObj->{'attachments-count'};
-        $this->authorAvatarUrl = $responseObj->{'author-avatar-url'};
-        $this->authorFirstName = $responseObj->{'author-firstname'};
-        $this->authorId = $responseObj->{'author-id'};
-        $this->authorLastName= $responseObj->{'author-lastname'};
-        $this->body = $responseObj->body;
-        $this->categoryId = $responseObj->{'category-id'};
-        $this->commentsCount = $responseObj->{'comments-count'};
-        $this->id = $responseObj->id;
-        $this->messageId = $responseObj->messageId;
-        $this->postedOn = $responseObj->{'posted-on'};
-        $this->replyNo = $responseObj->replyNo;
-        $this->title = $responseObj->title;
-        $this->setPrivate(isset($responseObj->private) ? $responseObj->private : null);
+        if (!isset($responseObj->{'messageReplies'})) {
+            throw new InvalidDataType('messageReplies');
+        }
+        $responseObj = $responseObj->messageReplies;
+
+        foreach ($this->propToJsonMap as $propIndex => $propValue) {
+            if (!isset($responseObj->{$propValue})) {
+                continue;
+            }
+            switch ($propIndex) {
+                case 'authorId':
+                case 'id':
+                case 'categoryId':
+                case 'messageId':
+                case 'replyNo':
+                case 'commentsCount':
+                case 'attachmentsCount':
+                    $responseObj->{$propValue} = (int) $responseObj->{$propValue};
+                    break;
+                case 'postedOn':
+                    $tmpDate = \DateTime::createFromFormat('Y-m-d H:i:s', str_replace(['T', 'Z'], [' ', ''], $responseObj->{$propValue}));
+                    $responseObj->{$propValue} = $tmpDate;
+                    unset($tmpDate);
+                    break;
+            }
+            $setFunc = 'set' . ucfirst($propIndex);
+            $this->$setFunc($responseObj->{$propValue});
+        }
     }
 
     /**
@@ -137,7 +151,247 @@ class MessageReply extends BaseDataType
     /**
      * @return bool
      */
+    public function getPrivate(){
+        return $this->private;
+    }
+    /**
+     * @return bool
+     */
     public function isPrivate(){
         return $this->private;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAttachmentsCount()
+    {
+        return $this->attachmentsCount;
+    }
+
+    /**
+     * @param int $attachmentsCount
+     * @return MessageReply
+     */
+    public function setAttachmentsCount(int $attachmentsCount = 0): MessageReply
+    {
+        $this->attachmentsCount = $attachmentsCount;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthorAvatarUrl()
+    {
+        return $this->authorAvatarUrl;
+    }
+
+    /**
+     * @param string $authorAvatarUrl
+     * @return MessageReply
+     */
+    public function setAuthorAvatarUrl(string $authorAvatarUrl = ''): MessageReply
+    {
+        $this->authorAvatarUrl = $authorAvatarUrl;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthorFirstName()
+    {
+        return $this->authorFirstName;
+    }
+
+    /**
+     * @param string $authorFirstName
+     * @return MessageReply
+     */
+    public function setAuthorFirstName(string $authorFirstName): MessageReply
+    {
+        $this->authorFirstName = $authorFirstName;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAuthorId()
+    {
+        return $this->authorId;
+    }
+
+    /**
+     * @param int $authorId
+     * @return MessageReply
+     */
+    public function setAuthorId(int $authorId): MessageReply
+    {
+        $this->authorId = $authorId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthorLastName()
+    {
+        return $this->authorLastName;
+    }
+
+    /**
+     * @param string $authorLastName
+     * @return MessageReply
+     */
+    public function setAuthorLastName(string $authorLastName): MessageReply
+    {
+        $this->authorLastName = $authorLastName;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBody()
+    {
+        return $this->body;
+    }
+
+    /**
+     * @param string $body
+     * @return MessageReply
+     */
+    public function setBody(string $body): MessageReply
+    {
+        $this->body = $body;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCategoryId()
+    {
+        return $this->categoryId;
+    }
+
+    /**
+     * @param int $categoryId
+     * @return MessageReply
+     */
+    public function setCategoryId(int $categoryId): MessageReply
+    {
+        $this->categoryId = $categoryId;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCommentsCount()
+    {
+        return $this->commentsCount;
+    }
+
+    /**
+     * @param int $commentsCount
+     * @return MessageReply
+     */
+    public function setCommentsCount(int $commentsCount = 0): MessageReply
+    {
+        $this->commentsCount = $commentsCount;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     * @return MessageReply
+     */
+    public function setId(int $id): MessageReply
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMessageId()
+    {
+        return $this->messageId;
+    }
+
+    /**
+     * @param int $messageId
+     * @return MessageReply
+     */
+    public function setMessageId(int $messageId): MessageReply
+    {
+        $this->messageId = $messageId;
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getPostedOn()
+    {
+        return $this->postedOn;
+    }
+
+    /**
+     * @param \DateTime $postedOn
+     * @return MessageReply
+     */
+    public function setPostedOn(\DateTime $postedOn): MessageReply
+    {
+        $this->postedOn = $postedOn;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getReplyNo()
+    {
+        return $this->replyNo;
+    }
+
+    /**
+     * @param int $replyNo
+     * @return MessageReply
+     */
+    public function setReplyNo(int $replyNo): MessageReply
+    {
+        $this->replyNo = $replyNo;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     * @return MessageReply
+     */
+    public function setTitle(string $title): MessageReply
+    {
+        $this->title = $title;
+        return $this;
     }
 }
