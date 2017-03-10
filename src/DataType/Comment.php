@@ -82,7 +82,7 @@ class Comment extends BaseDataType
     public $private = false;
 
     /**
-     * Account constructor.
+     * Comment constructor.
      * @param \stdClass|null $responseObj
      * @throws InvalidDataType
      */

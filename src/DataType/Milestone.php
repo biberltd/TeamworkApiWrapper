@@ -97,7 +97,7 @@ class Milestone extends BaseDataType
     private $private = false;
 
     /**
-     * Account constructor.
+     * Milestone constructor.
      * @param \stdClass|null $responseObj
      * @throws InvalidDataType
      */
