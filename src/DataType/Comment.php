@@ -113,7 +113,7 @@ class Comment extends BaseDataType
         if (!isset($responseObj->{'comment'})) {
             throw new InvalidDataType('comment');
         }
-        $responseObj = $responseObj->person;
+        $responseObj = $responseObj->comment;
 
         foreach ($this->propToJsonMap as $propIndex => $propValue) {
             if (!isset($responseObj->{$propValue})) {

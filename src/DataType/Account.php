@@ -139,7 +139,7 @@ class Account extends BaseDataType
         if (!isset($responseObj->{'account'})) {
             throw new InvalidDataType('account');
         }
-        $responseObj = $responseObj->person;
+        $responseObj = $responseObj->account;
 
         foreach ($this->propToJsonMap as $propIndex => $propValue) {
             if (!isset($responseObj->{$propValue})) {

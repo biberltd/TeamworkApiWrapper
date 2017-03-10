@@ -72,7 +72,7 @@ class Message extends BaseDataType
     public $id;
 
     /**
-     * @var string
+     * @var \DateTime
      */
     public $postedOn;
 
@@ -122,26 +122,33 @@ class Message extends BaseDataType
      */
     public function convertFromResponseObj(\stdClass $responseObj)
     {
-        if(!isset($responseObj->message)){
+        if (!isset($responseObj->{'message'})) {
             throw new InvalidDataType('message');
         }
+        $responseObj = $responseObj->message;
 
-        $postDetails = $responseObj->post;
-
-        $this->attachmentsCount = $postDetails->{'attachments-count'};
-        $this->authorAvatarUrl = $postDetails->{'author-avatar-url'};
-        $this->authorFirstName = $postDetails->{'author-first-name'};
-        $this->authorId = $postDetails->authorId;
-        $this->authorLastName = $postDetails->{'author-last-name'};
-        $this->body = $postDetails->body;
-        $this->displayBody = $postDetails->{'display-body'};
-        $this->categoryId = $postDetails->{'category-id'};
-        $this->commentsCount = $postDetails->{'comments-count'};
-        $this->id = $postDetails->id;
-        $this->postedOn = $postDetails->{'posted-on'};
-        $this->private = isset($postDetails->private) ? $postDetails->private : $this->private;
-        $this->projectId = $postDetails->{'project-id'};
-        $this->title = $postDetails->title;
+        foreach ($this->propToJsonMap as $propIndex => $propValue) {
+            if (!isset($responseObj->{$propValue})) {
+                continue;
+            }
+            switch ($propIndex) {
+                case 'authorId':
+                case 'id':
+                case 'categoryId':
+                case 'projectId':
+                case 'commentsCount':
+                case 'attachmentsCount':
+                    $responseObj->{$propValue} = (int) $responseObj->{$propValue};
+                    break;
+                case 'postedOn':
+                    $tmpDate = \DateTime::createFromFormat('Y-m-d H:i:s', str_replace(['T', 'Z'], [' ', ''], $responseObj->{$propValue}));
+                    $responseObj->{$propValue} = $tmpDate;
+                    unset($tmpDate);
+                    break;
+            }
+            $setFunc = 'set' . ucfirst($propIndex);
+            $this->$setFunc($responseObj->{$propValue});
+        }
     }
 
     /**
@@ -157,7 +164,250 @@ class Message extends BaseDataType
     /**
      * @return bool
      */
+    public function getPrivate(){
+        return $this->private;
+    }
+
+    /**
+     * @return bool
+     */
     public function isPrivate(){
         return $this->private;
     }
+
+    /**
+     * @return int
+     */
+    public function getAttachmentsCount()
+    {
+        return $this->attachmentsCount;
+    }
+
+    /**
+     * @param int $attachmentsCount
+     * @return Message
+     */
+    public function setAttachmentsCount(int $attachmentsCount = 0): Message
+    {
+        $this->attachmentsCount = $attachmentsCount;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthorAvatarUrl()
+    {
+        return $this->authorAvatarUrl;
+    }
+
+    /**
+     * @param string $authorAvatarUrl
+     * @return Message
+     */
+    public function setAuthorAvatarUrl(string $authorAvatarUrl): Message
+    {
+        $this->authorAvatarUrl = $authorAvatarUrl;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthorFirstName()
+    {
+        return $this->authorFirstName;
+    }
+
+    /**
+     * @param string $authorFirstName
+     * @return Message
+     */
+    public function setAuthorFirstName(string $authorFirstName): Message
+    {
+        $this->authorFirstName = $authorFirstName;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAuthorId()
+    {
+        return $this->authorId;
+    }
+
+    /**
+     * @param int $authorId
+     * @return Message
+     */
+    public function setAuthorId(int $authorId): Message
+    {
+        $this->authorId = $authorId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthorLastName()
+    {
+        return $this->authorLastName;
+    }
+
+    /**
+     * @param string $authorLastName
+     * @return Message
+     */
+    public function setAuthorLastName(string $authorLastName): Message
+    {
+        $this->authorLastName = $authorLastName;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBody()
+    {
+        return $this->body;
+    }
+
+    /**
+     * @param string $body
+     * @return Message
+     */
+    public function setBody(string $body): Message
+    {
+        $this->body = $body;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCategoryId()
+    {
+        return $this->categoryId;
+    }
+
+    /**
+     * @param int $categoryId
+     * @return Message
+     */
+    public function setCategoryId(int $categoryId): Message
+    {
+        $this->categoryId = $categoryId;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCommentsCount()
+    {
+        return $this->commentsCount;
+    }
+
+    /**
+     * @param int $commentsCount
+     * @return Message
+     */
+    public function setCommentsCount(int $commentsCount = 0): Message
+    {
+        $this->commentsCount = $commentsCount;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDisplayBody()
+    {
+        return $this->displayBody;
+    }
+
+    /**
+     * @param string $displayBody
+     * @return Message
+     */
+    public function setDisplayBody(string $displayBody): Message
+    {
+        $this->displayBody = $displayBody;
+        return $this;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     * @return Message
+     */
+    public function setId(int $id): Message
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @param bool $forTw
+     * @return \DateTime|string
+     */
+    public function getPostedOn(bool $forTw = false)
+    {
+        if(!$forTw){
+            return $this->postedOn;
+        }
+        return $this->postedOn->format('Y-m-d\TH:i:s\Z');
+    }
+
+    /**
+     * @param string $postedOn
+     * @return Message
+     */
+    public function setPostedOn(string $postedOn): Message
+    {
+        $this->postedOn = $postedOn;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getProjectId()
+    {
+        return $this->projectId;
+    }
+
+    /**
+     * @param int $projectId
+     * @return Message
+     */
+    public function setProjectId(int $projectId): Message
+    {
+        $this->projectId = $projectId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     * @return Message
+     */
+    public function setTitle(string $title): Message
+    {
+        $this->title = $title;
+        return $this;
+    }
+
 }
