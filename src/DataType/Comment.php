@@ -20,66 +20,65 @@ use BiberLtd\TeamworkApiWrapper\Exception\InvalidDataType;
 
 class Comment extends BaseDataType
 {
+    /**
+     * @var int
+     */
+    private $attachmentsCount;
+
+    /**
+     * @var string
+     */
+    private $authorAvatarUrl;
+
+    /**
+     * @var string
+     */
+    private $authorFirstName;
+
+    /**
+     * @var string
+     */
+    private $authorLastName;
 
     /**
      * @var int
      */
-    public $attachmentsCount;
+    private $authorId;
 
     /**
      * @var string
      */
-    public $authorAvatarUrl;
-
-    /**
-     * @var string
-     */
-    public $authorFirstName;
-
-    /**
-     * @var string
-     */
-    public $authorLastName;
+    private $body;
 
     /**
      * @var int
      */
-    public $authorId;
-
-    /**
-     * @var string
-     */
-    public $body;
-
-    /**
-     * @var int
-     */
-    public $commentableId;
+    private $commentableId;
 
     /**
      * todo_items, milestones, notebooks, links, files
      * @var string
      */
-    public $commentableType = "todo_items";
+    private $commentableType = "todo_items";
 
     /**
      * @var \DateTime
      */
-    public $dateTime;
+    private $dateTime;
 
     /**
      * @var string
      */
-    public $emailedFrom;
+    private $emailedFrom;
 
     /**
      * @var int
      */
-    public $id;
+    private $id;
     /**
      * @var bool
      */
-    public $private = false;
+    private $private = false;
 
     /**
      * Comment constructor.
