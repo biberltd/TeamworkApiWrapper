@@ -89,7 +89,7 @@ class TodoList extends BaseDataType
 
 
     /**
-     * Account constructor.
+     * TodoList constructor.
      * @param \stdClass|null $responseObj
      * @throws InvalidDataType
      */

@@ -101,7 +101,7 @@ class Post extends BaseDataType
             'authorId'                      => 'author-id',
             'useTextiles'                   => 'use-textiles',
             'milestoneId'                   => 'milestoe-id',
-            'postedOn'                      => 'poste-on',
+            'postedOn'                      => 'posted-on',
             'projectId'                     => 'project-id',
             'completed'                     => 'completed',
             'commentsCount'                 => 'comments-count',
