@@ -287,7 +287,7 @@ class TodoItem extends BaseDataType
     private $tags;
 
     /**
-     * Comment constructor.
+     * TodoItem constructor.
      * @param \stdClass|null $responseObj
      * @throws InvalidDataType
      */
@@ -352,10 +352,10 @@ class TodoItem extends BaseDataType
      */
     public function convertFromResponseObj(\stdClass $responseObj)
     {
-        if (!isset($responseObj->{'time-entry'})) {
-            throw new InvalidDataType('time-entry');
+        if (!isset($responseObj->{'todo-item'})) {
+            throw new InvalidDataType('todo-item');
         }
-        $responseObj = $responseObj->{'time-entry'};
+        $responseObj = $responseObj->{'todo-item'};
 
         foreach ($this->propToJsonMap as $propIndex => $propValue) {
             if (!isset($responseObj->{$propValue})) {
